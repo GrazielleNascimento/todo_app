@@ -1,0 +1,451 @@
+{
+	"info": {
+		"_postman_id": "2fb3286b-372e-4469-8bfc-1bff5cc184a9",
+		"name": "TODO List",
+		"description": "# API de To-Do List\n\n## 📌 Visão Geral\n\nAPI RESTful para gerenciamento de projetos e tarefas, construída com Ruby on Rails. Esta documentação fornece os endpoints disponíveis para integração via Postman.\n\n## 🔗 URL Base\n\n`http://localhost:3000` (desenvolvimento)\n\n## 📋 Endpoints\n\n### Projetos\n\n#### 1\\. Listar todos os projetos\n\n```\nGET /projects\n\n ```\n\n**Exemplo de resposta:**\n\n``` json\n[\n  {\n    \"id\": 1,\n    \"title\": \"Projeto A\",\n    \"created_at\": \"2023-08-20T12:00:00Z\",\n    \"updated_at\": \"2023-08-20T12:00:00Z\",\n    \"tasks\": [\n      {\n        \"id\": 1,\n        \"title\": \"Tarefa 1\",\n        \"description\": \"Descrição da tarefa\",\n        \"completed\": false,\n        \"created_at\": \"2023-08-20T12:05:00Z\",\n        \"updated_at\": \"2023-08-20T12:05:00Z\"\n      }\n    ]\n  }\n]\n\n ```\n\n#### 2\\. Criar novo projeto\n\n```\nPOST /projects\n\n ```\n\n**Body (JSON):**\n\n``` json\n{\n  \"project\": {\n    \"title\": \"Novo Projeto\"\n  }\n}\n\n ```\n\n#### 3\\. Buscar projeto específico\n\n```\nGET /projects/:id\n\n ```\n\n#### 4\\. Atualizar projeto\n\n```\nPATCH /projects/:id\n\n ```\n\n**Body (JSON):**\n\n``` json\n{\n  \"project\": {\n    \"title\": \"Título Atualizado\"\n  }\n}\n\n ```\n\n#### 5\\. Excluir projeto\n\n```\nDELETE /projects/:id\n\n ```\n\n### Tarefas\n\n#### 1\\. Criar nova tarefa em um projeto\n\n```\nPOST /projects/:project_id/tasks\n\n ```\n\n**Body (JSON):**\n\n``` json\n{\n  \"task\": {\n    \"title\": \"Nova Tarefa\",\n    \"description\": \"Descrição opcional\",\n    \"completed\": false\n  }\n}\n\n ```\n\n#### 2\\. Criar lote de tarefas\n\n```\nPOST /projects/:project_id/batch_tasks\n\n ```\n\n**Body (JSON):**\n\n``` json\n{\n  \"tasks\": [\n    {\n      \"title\": \"Tarefa 1\",\n      \"description\": \"Descrição 1\"\n    },\n    {\n      \"title\": \"Tarefa 2\",\n      \"completed\": true\n    }\n  ]\n}\n\n ```\n\n#### 3\\. Listar todas as tarefas\n\n```\nGET /tasks\n\n ```\n\n#### 4\\. Buscar tarefa específica\n\n```\nGET /tasks/:id\n\n ```\n\n#### 5\\. Atualizar tarefa\n\n```\nPATCH /tasks/:id\n\n ```\n\n**Body (JSON):**\n\n``` json\n{\n  \"task\": {\n    \"title\": \"Título Atualizado\",\n    \"completed\": true\n  }\n}\n\n ```\n\n#### 6\\. Alternar status de uma tarefa\n\n```\nPATCH /tasks/:id/toggle_status\n\n ```\n\n#### 7\\. Excluir tarefa\n\n```\nDELETE /tasks/:id\n\n ```\n\n## 🚦 Códigos de Status\n\n- `200 OK` - Requisição bem-sucedida\n    \n- `201 Created` - Recurso criado com sucesso\n    \n- `400 Bad Request` - Dados inválidos\n    \n- `404 Not Found` - Recurso não encontrado\n    \n- `422 Unprocessable Entity` - Validação falhou\n    \n- `500 Internal Server Error` - Erro no servidor\n    \n\n## 🛠 Exemplo de Uso no Postman\n\n1. **Criar um novo projeto:**\n    \n    - Método: `POST`\n        \n    - URL: `http://localhost:3000/projects`\n        \n    - { \"project\": { \"title\": \"Meu Primeiro Projeto\" }}\n        \n2. **Adicionar tarefas ao projeto:**\n    \n    - Método: `POST`\n        \n    - URL: `http://localhost:3000/projects/1/tasks`\n        \n    - { \"task\": { \"title\": \"Primeira Tarefa\", \"description\": \"Fazer algo importante\" }}\n        \n3. **Listar todos os projetos com tarefas:**\n    \n    - Método: `GET`\n        \n    - URL: `http://localhost:3000/projects`\n        \n\n## 🧪 Health Check\n\n```\nGET /health\n\n ```\n\nResposta: `ok`\n\n## ⚠️ Tratamento de Erros\n\nExemplos de respostas de erro:\n\n``` json\n{\n  \"error\": \"Projeto não encontrado\"\n}\n\n ```\n\n``` json\n{\n  \"errors\": [\"Title não pode ficar em branco\"]\n}\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "42960596"
+	},
+	"item": [
+		{
+			"name": "CRIA UM PROJETO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"project\": {\n    \"title\": \"Projeto LEITURA\"\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/projects.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects.json"
+					]
+				},
+				"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+			},
+			"response": []
+		},
+		{
+			"name": "CRIA TASK ASSOCIADA A UM PROJETO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"task\": {\n    \"title\": \"ler livro aguas das flores\",\n    \"description\": \"orquideas colombianas\",\n    \"completed\": false\n  }\n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/projects/8/tasks.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects",
+						"8",
+						"tasks.json"
+					]
+				},
+				"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "CRIAR LOTE DE TAREFAS EM UM PROJETO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful PUT request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"tasks\": [\n    {\"title\": \"Comprar refrigerantes\", \"description\": \"Coca-cola e Guaraná\", \"completed\": false},\n    {\"title\": \"Comprar salgados\", \"description\": \"Coxinha e empada\", \"completed\": false}\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/projects/8/batch_tasks.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects",
+						"8",
+						"batch_tasks.json"
+					]
+				},
+				"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "RETORNA TODAS TAREFAS ASSOCIADAS A UM PROJETO",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful DELETE request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/tasks.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tasks.json"
+					]
+				},
+				"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+			},
+			"response": []
+		},
+		{
+			"name": "RETORNA TODOS OS PROJETOS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/projects.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BUSCA PROJETO ESPECIFICO PELO ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/projects/8.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects",
+						"8.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BUSCA TASK ESPECIFICA PELO ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/tasks/5.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tasks",
+						"5.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TAREFAS STATUS COMPLETAS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/tasks.json?completed=true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tasks.json"
+					],
+					"query": [
+						{
+							"key": "completed",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ATUALIZAR TITULO DE UM PROJETO",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"project\": {\n    \"title\": \"Projeto Faculdade Atualizado\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/projects/3.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects",
+						"3.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ATUALIZAR TASK",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"task\": {\n    \"title\": \"Plantar Orquídeas Colombianas\",\n    \"description\": \"Comprar sementes e plantá-las no jardim\",\n    \"completed\": true\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/tasks/3.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tasks",
+						"3.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ATUALIZAR STATUS DE UMA TAREFA",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/tasks/3/toggle_status.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tasks",
+						"3",
+						"toggle_status.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETAR PROJETO",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/projects/1.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"projects",
+						"1.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETAR TAREFA",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/tasks/4.json",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"tasks",
+						"4.json"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "1"
+		},
+		{
+			"key": "base_url",
+			"value": "https://postman-rest-api-learner.glitch.me/"
+		}
+	]
+}

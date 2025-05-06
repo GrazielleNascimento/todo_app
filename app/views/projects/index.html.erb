@@ -1,0 +1,117 @@
+<!-- app/views/projects/index.html.erb -->
+<h1 class="text-2xl font-bold mb-6">ToDo List</h1>
+
+<!-- Seção de criação de novo projeto -->
+<div class="bg-dark-light p-4 rounded-lg mb-6">
+  <h2 class="text-xl font-semibold mb-4">Novo Projeto</h2>
+  
+  <%= form_with(model: Project.new, class: "flex gap-4") do |form| %>
+    <div class="flex-grow">
+      <%= form.text_field :title, 
+          class: "form-control", 
+          placeholder: "Nome do projeto",
+          required: true,
+          autocomplete: "off" %>
+    </div>
+    <%= form.submit "Criar Projeto", class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<!-- Lista de projetos -->
+<h2 class="text-xl font-semibold mb-4">Seus Projetos</h2>
+
+<% if @projects.any? %>
+  <% @projects.each do |project| %>
+    <div id="project-<%= project.id %>" class="bg-dark-light p-4 rounded-lg mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-semibold"><%= project.title %></h3>
+        <div class="flex gap-2">
+          <%= link_to edit_project_path(project), class: "task-action" do %>
+            <i class="fas fa-edit"></i>
+          <% end %>
+          <%= button_to project_path(project), method: :delete, class: "task-action task-action-delete", 
+              data: { turbo_confirm: "Tem certeza? Todas as tarefas associadas serão removidas." } do %>
+            <i class="fas fa-trash"></i>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Barra de progresso -->
+      <div class="progress-container mb-4">
+        <div class="flex justify-between text-sm mb-1">
+          <span>
+            <%= project.completed_tasks_count %> de <%= project.total_tasks_count %> tarefas completas
+          </span>
+          <span><%= project.completion_percentage %>%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: <%= project.completion_percentage %>%"></div>
+        </div>
+      </div>
+      
+      <!-- Formulário para adicionar nova tarefa -->
+      <div class="mb-4 border-t border-b border-dark-lighter py-4">
+        <h4 class="font-medium mb-2">Nova Tarefa</h4>
+        <%= form_with(model: [project, Task.new]) do |form| %>
+          <div class="form-group">
+            <%= form.text_field :title, 
+                class: "form-control", 
+                placeholder: "Título da tarefa",
+                required: true,
+                autocomplete: "off" %>
+          </div>
+          <div class="form-group">
+            <%= form.text_area :description, 
+                class: "form-control", 
+                placeholder: "Descrição (opcional)",
+                rows: 2 %>
+          </div>
+          <%= form.submit "Adicionar Tarefa", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+      
+      <!-- Lista de tarefas -->
+      <div>
+        <h4 class="font-medium mb-2">Tarefas</h4>
+        <% if project.tasks.any? %>
+          <% project.tasks.each do |task| %>
+            <div id="task-<%= task.id %>" class="task-item <%= task.completed? ? 'task-completed' : '' %>">
+              <div class="flex items-center flex-grow">
+                <%= button_to toggle_status_task_path(task), method: :patch, remote: true, class: "flex items-center" do %>
+                  <span class="task-checkbox <%= task.completed? ? 'checked' : '' %>"></span>
+                <% end %>
+                
+                <div class="ml-2">
+                  <div class="task-title font-medium"><%= task.title %></div>
+                  <% if task.description.present? %>
+                    <div class="text-sm text-light-dark mt-1"><%= task.description %></div>
+                  <% end %>
+                </div>
+              </div>
+              
+              <div class="task-actions">
+                <%= link_to edit_task_path(task), class: "task-action" do %>
+                  <i class="fas fa-edit"></i>
+                <% end %>
+                
+                <%= button_to task_path(task), method: :delete, remote: true, 
+                    class: "task-action task-action-delete", 
+                    data: { turbo_confirm: "Tem certeza que deseja remover esta tarefa?" } do %>
+                  <i class="fas fa-trash"></i>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="text-light-dark text-sm">Nenhuma tarefa neste projeto.</p>
+        <% end %>
+        
+        <%= link_to "Ver Detalhes", project_path(project), class: "btn btn-secondary mt-4 w-full" %>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <div class="bg-dark-light p-6 rounded-lg text-center">
+    <p class="text-light-dark">Você ainda não tem projetos. Crie seu primeiro projeto para começar!</p>
+  </div>
+<% end %>

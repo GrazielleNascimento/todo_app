@@ -1,0 +1,37 @@
+// Remover o projeto da lista sem recarregar a página
+const projectElement = document.getElementById('project-<%= @project.id %>');
+if (projectElement) {
+  projectElement.classList.add('fade-out');
+  setTimeout(() => {
+    projectElement.remove();
+    
+    // Se não houver mais projetos, mostrar mensagem
+    if (document.querySelectorAll('#projects-list > div').length === 0) {
+      document.getElementById('projects-list').innerHTML = `
+        <div class="col-span-full text-center py-8">
+          <p class="text-gray-400">Você ainda não tem projetos. Crie um acima para começar!</p>
+        </div>
+      `;
+    }
+  }, 300);
+}
+
+// Mostrar mensagem de sucesso
+const flashMessage = `
+<div class="bg-green-500 text-white p-4 rounded-md mb-6 flex justify-between items-center">
+  <p>Projeto removido com sucesso!</p>
+  <button class="focus:outline-none" onclick="this.parentElement.style.display='none'">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+`;
+
+document.querySelector('main.container').insertAdjacentHTML('afterbegin', flashMessage);
+
+// Fazer a mensagem desaparecer após 5 segundos
+setTimeout(() => {
+  const flashMessages = document.querySelectorAll('.bg-green-500');
+  if (flashMessages.length > 0) {
+    flashMessages[flashMessages.length - 1].style.display = 'none';
+  }
+}, 5000);

@@ -1,0 +1,7 @@
+// Atualizar status da tarefa
+window.updateTaskStatus(
+  <%= @task.id %>, 
+  <%= @task.completed %>,
+  <%= @task.project.tasks.where(completed: true).count %>, 
+  <%= @task.project.tasks.count %>
+);

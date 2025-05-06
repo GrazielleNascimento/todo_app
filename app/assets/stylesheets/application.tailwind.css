@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom components */
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200 inline-flex items-center justify-center;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+  
+  .btn-secondary {
+    @apply bg-dark-lighter text-white hover:bg-dark-light;
+  }
+  
+  .btn-success {
+    @apply bg-success text-white hover:opacity-90;
+  }
+  
+  .btn-danger {
+    @apply bg-danger text-white hover:opacity-90;
+  }
+  
+  .form-control {
+    @apply w-full px-3 py-2 border border-dark-lighter rounded-md bg-dark-lighter text-light placeholder:text-light-dark focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+  }
+  
+  .card {
+    @apply bg-dark-light rounded-lg shadow-lg overflow-hidden transition-transform duration-200 hover:transform hover:scale-105;
+  }
+  
+  .card-header {
+    @apply px-6 py-4 bg-primary-dark text-white font-semibold;
+  }
+  
+  .card-body {
+    @apply p-6;
+  }
+  
+  .task-item {
+    @apply flex items-center justify-between gap-3 bg-dark-lighter p-3 rounded-md mb-3 transition-all duration-200 hover:bg-opacity-80;
+  }
+  
+  .task-completed {
+    @apply opacity-60;
+  }
+  
+  .task-completed .task-title {
+    @apply line-through text-light-dark;
+  }
+  
+  .task-checkbox {
+    @apply appearance-none w-5 h-5 rounded-full border-2 border-light-dark transition-all duration-200 relative cursor-pointer checked:bg-success checked:border-success;
+  }
+  
+  .task-checkbox:checked::after {
+    content: "✓";
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-xs;
+  }
+  
+  .task-actions {
+    @apply flex gap-2;
+  }
+  
+  .task-action {
+    @apply text-light-dark hover:text-light transition-colors duration-200;
+  }
+  
+  .task-action-delete:hover {
+    @apply text-danger;
+  }
+  
+  .progress-bar {
+    @apply w-full h-2 bg-dark-lighter rounded-full overflow-hidden;
+  }
+  
+  .progress-fill {
+    @apply h-full bg-primary rounded-full transition-all duration-300 ease-out;
+  }
+  
+  .filter {
+    @apply px-3 py-1 text-sm rounded-md bg-dark-lighter text-light-dark hover:bg-dark-light transition-colors duration-200 cursor-pointer;
+  }
+  
+  .filter.active {
+    @apply bg-primary text-white;
+  }
+  
+  .alert {
+    @apply px-4 py-3 rounded-md mb-4 flex items-center justify-between;
+  }
+  
+  .alert-success {
+    @apply bg-success text-white;
+  }
+  
+  .alert-danger {
+    @apply bg-danger text-white;
+  }
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .card-body {
+    @apply p-4;
+  }
+  
+  .container {
+    @apply px-4;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary-dark rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary;
+}

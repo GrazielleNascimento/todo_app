@@ -1,0 +1,140 @@
+<!-- app/views/projects/index.html.erb -->
+<div class="max-w-6xl mx-auto">
+  <h1 class="text-2xl md:text-3xl font-bold mb-6 text-light">ToDo List</h1>
+
+  <!-- Seção de criação de novo projeto -->
+  <div class="bg-dark-light p-4 md:p-6 rounded-lg mb-6 card">
+    <h2 class="text-lg md:text-xl font-semibold mb-4 text-light">Novo Projeto</h2>
+    
+    <%= form_with(model: Project.new, local: true, class: "flex flex-col sm:flex-row gap-4") do |form| %>
+      <div class="flex-grow">
+        <%= form.text_field :title, 
+            class: "form-control w-full", 
+            placeholder: "Nome do projeto",
+            required: true,
+            autocomplete: "off" %>
+      </div>
+      <%= form.submit "Criar Projeto", class: "btn btn-primary w-full sm:w-auto" %>
+    <% end %>
+  </div>
+
+  <!-- Lista de projetos -->
+  <h2 class="text-lg md:text-xl font-semibold mb-4 text-light">Seus Projetos</h2>
+
+  <% if @projects.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <% @projects.each do |project| %>
+        <div id="project-<%= project.id %>" class="card bg-dark-light">
+          <div class="flex justify-between items-center p-4 border-b border-dark-lighter">
+            <h3 class="text-base md:text-lg font-semibold text-light truncate flex-grow">
+              <%= link_to project.title, project_path(project), class: "hover:text-primary-light transition-colors" %>
+            </h3>
+            <div class="flex gap-2 ml-2">
+              <%= link_to edit_project_path(project), class: "task-action" do %>
+                <i class="fas fa-edit text-sm"></i>
+              <% end %>
+              <%= button_to project_path(project), method: :delete, 
+                  class: "task-action task-action-delete", 
+                  data: { turbo_confirm: "Tem certeza? Todas as tarefas associadas serão removidas." } do %>
+                <i class="fas fa-trash text-sm"></i>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="p-4">
+            <!-- Barra de progresso -->
+            <div class="mb-4">
+              <div class="flex justify-between text-xs md:text-sm mb-1 text-light">
+                <span>
+                  <%= project.completed_tasks_count %> de <%= project.total_tasks_count %> tarefas completas
+                </span>
+                <span><%= project.completion_percentage %>%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: <%= project.completion_percentage %>%"></div>
+              </div>
+            </div>
+            
+            <!-- Formulário para adicionar nova tarefa -->
+            <div class="mb-4 border-t border-b border-dark-lighter py-4">
+              <h4 class="font-medium mb-2 text-sm text-light">Nova Tarefa</h4>
+              <%= form_with(model: [project, Task.new], html: { class: "space-y-2" }) do |form| %>
+                <div>
+                  <%= form.text_field :title, 
+                      class: "form-control text-sm", 
+                      placeholder: "Título da tarefa",
+                      required: true,
+                      autocomplete: "off" %>
+                </div>
+                <div>
+                  <%= form.text_area :description, 
+                      class: "form-control text-sm", 
+                      placeholder: "Descrição (opcional)",
+                      rows: 2 %>
+                </div>
+                <%= form.submit "Adicionar Tarefa", class: "btn btn-primary w-full text-sm" %>
+              <% end %>
+            </div>
+            
+            <!-- Lista de tarefas -->
+            <div>
+              <h4 class="font-medium mb-2 text-sm text-light">Tarefas</h4>
+              <% if project.tasks.any? %>
+                <% project.tasks.limit(3).each do |task| %>
+                  <div id="task-<%= task.id %>" class="task-item text-sm">
+                    <div class="flex items-center flex-grow min-w-0">
+                      <%= button_to toggle_status_task_path(task), method: :patch, 
+                          remote: true, class: "flex items-center flex-shrink-0" do %>
+                        <span class="task-checkbox <%= task.completed? ? 'checked' : '' %>"></span>
+                      <% end %>
+                      
+                      <div class="ml-2 min-w-0">
+                        <div class="task-title font-medium text-light truncate">
+                          <%= task.title %>
+                        </div>
+                        <% if task.description.present? %>
+                          <div class="text-xs text-light-dark mt-1 truncate">
+                            <%= task.description %>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                    
+                    <div class="task-actions flex-shrink-0">
+                      <%= link_to edit_task_path(task), class: "task-action" do %>
+                        <i class="fas fa-edit text-xs"></i>
+                      <% end %>
+                      
+                      <%= button_to task_path(task), method: :delete, remote: true, 
+                          class: "task-action task-action-delete", 
+                          data: { turbo_confirm: "Tem certeza que deseja remover esta tarefa?" } do %>
+                        <i class="fas fa-trash text-xs"></i>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+                
+                <% if project.tasks.count > 3 %>
+                  <p class="text-xs text-light-dark mt-2">
+                    + <%= project.tasks.count - 3 %> tarefa(s) mais
+                  </p>
+                <% end %>
+              <% else %>
+                <p class="text-light-dark text-xs">Nenhuma tarefa neste projeto.</p>
+              <% end %>
+              
+              <%= link_to "Ver Detalhes", project_path(project), 
+                  class: "btn btn-secondary mt-4 w-full text-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="bg-dark-light p-6 rounded-lg text-center card">
+      <p class="text-light-dark text-sm md:text-base">
+        Você ainda não tem projetos. Crie seu primeiro projeto para começar!
+      </p>
+    </div>
+  <% end %>
+</div>

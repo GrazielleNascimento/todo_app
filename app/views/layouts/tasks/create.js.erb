@@ -1,0 +1,28 @@
+window.addNewTask(
+  '<%= j render partial: "tasks/task", locals: { task: @task } %>', 
+  <%= @project.tasks.where(completed: true).count %>, 
+  <%= @project.tasks.count %>
+);
+
+// Limpar formulário
+document.querySelector('form[action="/projects/<%= @project.id %>/tasks"]').reset();
+
+// Mostrar mensagem de sucesso
+const message = document.createElement('div');
+message.className = 'alert alert-success';
+message.innerHTML = `
+  <span>Tarefa criada com sucesso!</span>
+  <button onclick="this.parentElement.remove()">
+    <i class="fas fa-times"></i>
+  </button>
+`;
+
+document.querySelector('main').insertBefore(message, document.querySelector('main').firstChild);
+
+// Auto-dismiss após 5 segundos
+setTimeout(() => {
+  message.classList.add('fade-out');
+  setTimeout(() => {
+    message.remove();
+  }, 300);
+}, 5000);

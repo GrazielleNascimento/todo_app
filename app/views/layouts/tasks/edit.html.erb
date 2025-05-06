@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-header">
+    <h2 class="text-xl font-semibold">Editar Tarefa</h2>
+  </div>
+  
+  <div class="card-body">
+    <%= form_with(model: @task) do |form| %>
+      <% if @task.errors.any? %>
+        <div class="alert alert-danger mb-4">
+          <h3 class="font-semibold mb-2">
+            <%= pluralize(@task.errors.count, "erro", "erros") %> impediu(ram) que esta tarefa fosse salva:
+          </h3>
+          <ul class="list-disc list-inside">
+            <% @task.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      
+      <div class="form-group">
+        <%= form.label :title, "Título", class: "block text-sm font-medium mb-1" %>
+        <%= form.text_field :title, class: "form-control", required: true %>
+      </div>
+      
+      <div class="form-group">
+        <%= form.label :description, "Descrição", class: "block text-sm font-medium mb-1" %>
+        <%= form.text_area :description, class: "form-control", rows: 3 %>
+      </div>
+      
+      <div class="form-group flex items-center">
+        <%= form.check_box :completed, class: "task-checkbox mr-2" %>
+        <%= form.label :completed, "Concluída", class: "text-light-dark" %>
+      </div>
+      
+      <div class="flex gap-3 mt-6">
+        <%= form.submit "Salvar Alterações", class: "btn btn-primary" %>
+        <%= link_to "Cancelar", project_path(@task.project), class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

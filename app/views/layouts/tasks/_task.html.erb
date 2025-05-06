@@ -1,0 +1,29 @@
+<div id="task-<%= task.id %>" class="task-item <%= task.completed? ? 'task-completed' : '' %>">
+  <div class="flex items-center flex-grow">
+    <%= button_to toggle_status_task_path(task), method: :patch, remote: true, class: "flex items-center" do %>
+      <span class="task-checkbox <%= task.completed? ? 'checked' : '' %>"></span>
+    <% end %>
+    
+    <div class="ml-2">
+      <div class="task-title font-medium"><%= task.title %></div>
+      <% if task.description.present? %>
+        <div class="text-sm text-light-dark mt-1"><%= task.description %></div>
+      <% end %>
+      <div class="text-xs text-light-dark mt-1">
+        Criada <%= time_ago_in_words(task.created_at) %> atrás
+      </div>
+    </div>
+  </div>
+  
+  <div class="task-actions">
+    <%= link_to edit_task_path(task), class: "task-action" do %>
+      <i class="fas fa-edit"></i>
+    <% end %>
+    
+    <%= button_to task_path(task), method: :delete, remote: true, 
+        class: "task-action task-action-delete", 
+        data: { turbo_confirm: "Tem certeza que deseja remover esta tarefa?" } do %>
+      <i class="fas fa-trash"></i>
+    <% end %>
+  </div>
+</div>

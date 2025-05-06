@@ -1,0 +1,25 @@
+// Adicionar o novo projeto à lista sem recarregar a página
+document.getElementById('projects-list').insertAdjacentHTML('afterbegin', '<%= j render partial: "projects/project_card", locals: { project: @project } %>');
+
+// Limpar o formulário de novo projeto
+document.querySelector('form[action="/projects"]').reset();
+
+// Mostrar mensagem de sucesso
+const flashMessage = `
+<div class="bg-green-500 text-white p-4 rounded-md mb-6 flex justify-between items-center">
+  <p>Projeto criado com sucesso!</p>
+  <button class="focus:outline-none" onclick="this.parentElement.style.display='none'">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+`;
+
+document.querySelector('main.container').insertAdjacentHTML('afterbegin', flashMessage);
+
+// Fazer a mensagem desaparecer após 5 segundos
+setTimeout(() => {
+  const flashMessages = document.querySelectorAll('.bg-green-500');
+  if (flashMessages.length > 0) {
+    flashMessages[flashMessages.length - 1].style.display = 'none';
+  }
+}, 5000);

@@ -1,0 +1,38 @@
+pt-BR:
+  activerecord:
+    models:
+      project: "Projeto"
+      task: "Tarefa"
+    attributes:
+      project:
+        title: "Título"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      task:
+        title: "Título"
+        description: "Descrição"
+        completed: "Concluída"
+        project: "Projeto"
+        created_at: "Criada em"
+        updated_at: "Atualizada em"
+    errors:
+      models:
+        project:
+          attributes:
+            title:
+              blank: "não pode ficar em branco"
+              too_long: "deve ter no máximo %{count} caracteres"
+        task:
+          attributes:
+            title:
+              blank: "não pode ficar em branco"
+              too_long: "deve ter no máximo %{count} caracteres"
+  helpers:
+    submit:
+      create: "Criar %{model}"
+      update: "Atualizar %{model}"
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d %b %H:%M"
+      long: "%d de %B de %Y, %H:%M"
